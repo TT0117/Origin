@@ -4,17 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MP4 Re-encoding App</title>
-    <!-- CSSファイルのリンク -->
     <link rel="stylesheet" href="style.css">
-    <!-- ffmpeg.jsの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.10.0/dist/ffmpeg.min.js"></script>
 </head>
 <body>
-
 <h1>MP4 Re-encoding App</h1>
-<input type="file" id="fileInput" accept="video/mp4">
+<!-- ファイル選択のためのinput -->
+<input type="file" id="fileInput" accept="video/mp4" onchange="displayFileInfo()">
+<!-- 選択されたファイルの情報を表示するための要素 -->
+<p id="fileInfo"></p>
+<!-- 選択されたファイルのプレビュー -->
+<video id="videoPreview" controls style="display:none; max-width: 100%;"></video>
 <button onclick="processVideo()">再エンコードしてダウンロード</button>
 
 <script src="script.js"></script>
+<script>
+function displayFileInfo() {
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const videoPreview = document.getElementById('videoPreview');
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        fileInfo.textContent = `選択したファイル: ${file.name}`;
+
+        // ファイルをURLに変換してビデオプレビューを表示
+        const url = URL.createObjectURL(file);
+        videoPreview.src = url;
+        videoPreview.style.display = 'block'; // プレビューを表示
+    } else {
+        fileInfo.textContent = '';
+        videoPreview.style.display = 'none'; // プレビューを非表示
+    }
+}
+</script>
 </body>
 </html>
